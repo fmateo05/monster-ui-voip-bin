@@ -348,19 +348,19 @@
 				</div>
 				<div class="section-content">
 				{{#each data}}
-					<div class="control-group{{#compare ../id '===' 'lines'}}{{#ifInArray keyNumber ../lineKeys}} warning{{/ifInArray}}{{/compare}}" data-id="{{@index}}">
+					<div class="control-group{{#compare ../id '===' 'combo_keys'}}{{#ifInArray keyNumber ../lineKeys}} warning{{/ifInArray}}{{/compare}}" data-id="{{@index}}">
 						<label for="provision.keys.{{../id}}[{{@index}}].type" class="control-label">
 							{{telicon 'drag-handle' class='drag-handle-icon'}}
 							<span>{{ ../label }} {{keyNumber}}</span>
 						</label>
-						{{#compare ../id '===' 'lines'}}
+						{{#compare ../id '===' 'combo_keys'}}
 							{{#monsterPanelText (replaceVar @root.i18n.devices.popupSettings.keys.alert.title keyNumber) 'warning' 'fill-width'}}
 								{{@root.i18n.devices.popupSettings.keys.alert.message}}
 							{{/monsterPanelText}}
 						{{/compare}}
 						<div class="controls">
 							<div class="feature-key-value active">
-							{{#compare ../id '===' 'lines'}}
+							{{#compare ../id '===' 'combo_keys'}}
 								<label for="provision.keys.{{../id}}[{{@index}}].type">{{ @root.i18n.devices.popupSettings.keys.labels.function }}</label>
 							{{/compare}}
 								<select name="provision.keys.{{../id}}[{{@index}}].type" class="feature-key-type span2">
@@ -391,6 +391,26 @@
 								{{/each}}
 								</select>
 							</div>
+							<div class="feature-key-value" data-type="call_return">
+								<label for="provision.keys.{{../id}}[{{@index}}].value.value">{{ @root.i18n.devices.popupSettings.keys.labels.user }}</label>
+								<select name="provision.keys.{{../id}}[{{@index}}].value.value" class="chosen-feature-key-user">
+								{{#each @root.extra.users}}
+									<option value="{{id}}">
+										{{getUserFullName this}}
+									</option>
+								{{/each}}
+								</select>
+							</div>
+							<div class="feature-key-value" data-type="transfer">
+								<label for="provision.keys.{{../id}}[{{@index}}].value.value">{{ @root.i18n.devices.popupSettings.keys.labels.user }}</label>
+								<select name="provision.keys.{{../id}}[{{@index}}].value.value" class="chosen-feature-key-user">
+								{{#each @root.extra.users}}
+									<option value="{{id}}">
+										{{getUserFullName this}}
+									</option>
+								{{/each}}
+								</select>
+							</div>
 							<div class="feature-key-value" data-type="parking">
 								<label for="provision.keys.{{../id}}[{{@index}}].value.value">{{ @root.i18n.devices.popupSettings.keys.labels.parkingSpot }}</label>
 								<select class="span1" name="provision.keys.{{../id}}[{{@index}}].value.value">
@@ -399,6 +419,11 @@
 								{{/each}}
 								</select>
 							</div>
+							<div class="feature-key-value" data-type="speed_dial">
+                                                                <label for="provision.keys.{{../id}}[{{@index}}].value.value">{{ @root.i18n.devices.popupSettings.keys.labels.value }}</label>
+                                                                <input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].value.value">
+                                                        </div>
+
 							<div class="feature-key-value" data-type="personal_parking">
 								<label for="provision.keys.{{../id}}[{{@index}}].value.value">{{ @root.i18n.devices.popupSettings.keys.labels.user }}</label>
 								<select name="provision.keys.{{../id}}[{{@index}}].value.value" class="chosen-feature-key-user">
@@ -409,28 +434,13 @@
 								{{/each}}
 								</select>
 							</div>
-							<div class="feature-key-value" data-type="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50">
-								<label for="provision.keys.{{../id}}[{{@index}}].key.value">{{ @root.i18n.devices.popupSettings.keys.labels.value }}</label>
-								<input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].key.value">
-							</div>
-                                                        <div class="feature-key-value" data-type="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50">
-								<label for="provision.keys.{{../id}}[{{@index}}].key.line">{{ @root.i18n.devices.popupSettings.keys.labels.lines }}</label>
-								<input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].key.line">
-							</div>
-													{{#compare ../id '===' 'lines'}}
-							
-                                                        <div class="feature-key-value" data-type="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50">
-								<label for="provision.keys.{{../id}}[{{@index}}].key.label">{{ @root.i18n.devices.popupSettings.keys.labels.deviceLabel }}</label>
-								<input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].key.label">
-							</div>
-												{{/compare}}
-													{{#compare ../id '===' 'combo_keys'}}
-							
-                                                        <div class="feature-key-value" data-type="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50">
-								<label for="provision.keys.{{../id}}[{{@index}}].key.label">{{ @root.i18n.devices.popupSettings.keys.labels.deviceLabel }}</label>
-								<input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].key.label">
-							</div>
-												{{/compare}}
+							{{#compare ../id '===' 'combo_keys'}}
+                                                        <div class="feature-key-value" data-type="presence personal_parking speed_dial parking transfer call_return">
+                                                                <label for="provision.keys.{{../id}}[{{@index}}].value.label">{{ @root.i18n.devices.popupSettings.keys.labels.deviceLabel }}</label>
+                                                                <input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].value.label">
+                                                        </div>
+                                                {{/compare}}
+
 						</div>
 					</div>
 				{{/each}}
