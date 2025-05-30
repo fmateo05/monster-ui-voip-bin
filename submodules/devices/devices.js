@@ -229,8 +229,8 @@ define(function(require) {
 		getKeyTypes: function(data) {
                             
 			return _.filter([
-				'lines',
-				'combo_keys'
+				'combo_keys',
+				'feature_keys'
 			], function(type) {
 				return _.get(data, [type, 'iterate'], 0) > 0;
 			});
@@ -725,7 +725,7 @@ define(function(require) {
 				$featureKeyValue.siblings('.feature-key-value[data-type~="' + type + '"]').addClass('active');
 			});
 
-			templateDevice.find('.tabs-section[data-section="comboKeys"] .type-info a').on('click', function() {
+			templateDevice.find('.tabs-section[data-section="featureKeys"] .type-info a').on('click', function() {
 				var $this = $(this);
 
 				setTimeout(function() {
@@ -841,11 +841,11 @@ define(function(require) {
 						if (val.type === 'none') {
 							keys[idx] = 'null';
 						} else {
-							if (key === 'lines' && val.type === 'parking') {
+							if (key === 'combo_keys' && val.type === 'parking') {
 								val.value.value =  _.parseInt(val.value.value, 10);
 							}
 
-							if (key !== 'lines' || isValuePropertyEmpty(val, 'label')) {
+							if (key !== 'combo_keys' || isValuePropertyEmpty(val, 'label')) {
 								if (isValuePropertyEmpty(val, 'value')) {
 									delete val.value;
 								} else {
@@ -1102,44 +1102,15 @@ define(function(require) {
 									lineKeys: defaultLineKeys || [1],
 									actions: _
 										.chain([
+											'call_return',
 											'presence',
 											'parking',
 											'personal_parking',
 											'speed_dial',
-											'0',
-                                                                                        "1",
-                                                                                        "2",
-                                                                                        "3",
-                                                                                        "4",
-                                                                                        "5",
-                                                                                        "6",
-                                                                                        "7",
-                                                                                        "8",
-                                                                                        "9",
-                                                                                        "10",
-                                                                                        "11",
-                                                                                        "12",
-                                                                                        "13",
-                                                                                        "14",
-                                                                                        "15",
-                                                                                        "16",
-                                                                                        "17",
-                                                                                        "18",
-                                                                                        "19",
-                                                                                        "20",
-                                                                                        "21",
-                                                                                        "22",
-                                                                                        "23",
-                                                                                        "24",
-                                                                                        "25",
-                                                                                        "26",
-                                                                                        "27",
-                                                                                        "28",
-                                                                                        "29",
-                                                                                        "30"
+											'transfer'
 										])
 										.concat(
-											type === 'lines' ? ['line'] : []
+											type === 'combo_keys' ? ['line'] : []
 										)
 										.filter(function(action) {
 											return _.isEmpty(keyActionsMod) || _.includes(keyActionsMod, action);
@@ -1155,7 +1126,7 @@ define(function(require) {
 												info: _.get(i18n, ['info', 'types', action]),
 												label: _.get(i18n, ['types', action])
 											},
-											type === 'lines' && hasDefaultLineKeys && !_.includes(allowedDefaultLineKeyActions, action) ? {
+											type === 'combo_keys' && hasDefaultLineKeys && !_.includes(allowedDefaultLineKeyActions, action) ? {
 												isActionRestringed: false
 											}
 											: {}
@@ -1163,10 +1134,10 @@ define(function(require) {
 										})
 										// Sort alphabetically while keeping `none` as first item
 										.sort(function(a, b) {
-/*											return a.id === 'none' ? -1
+											return a.id === 'none' ? -1
 												: b.id === 'none' ? 1
 												: a.label.localeCompare(b.label, monster.config.whitelabel.language);
-											*/
+											
 										})
 										.value(),
 									data: _.map(entries, function(metadata, idx) {
@@ -1224,64 +1195,15 @@ define(function(require) {
 									lineKeys: defaultLineKeys || [1],
 									actions: _
 										.chain([
+											'call_return',
 											'presence',
 											'parking',
 											'personal_parking',
 											'speed_dial',
-											'0',
-                                                                                        "1",
-                                                                                        "2",
-                                                                                        "3",
-                                                                                        "4",
-                                                                                        "5",
-                                                                                        "6",
-                                                                                        "7",
-                                                                                        "8",
-                                                                                        "9",
-                                                                                        "10",
-                                                                                        "11",
-                                                                                        "12",
-                                                                                        "13",
-                                                                                        "14",
-                                                                                        "15",
-                                                                                        "16",
-                                                                                        "17",
-                                                                                        "18",
-                                                                                        "19",
-                                                                                        "20",
-                                                                                        "21",
-                                                                                        "22",
-                                                                                        "23",
-                                                                                        "24",
-                                                                                        "25",
-                                                                                        "26",
-                                                                                        "27",
-                                                                                        "28",
-                                                                                        "29",
-                                                                                        "30",
-                                                                                        "31",
-                                                                                        "32",
-                                                                                        "33",
-                                                                                        "34",
-                                                                                        "35",
-                                                                                        "36",
-                                                                                        "37",
-                                                                                        "38",
-                                                                                        "39",
-                                                                                        "40",
-                                                                                        "41",
-                                                                                        "42",
-                                                                                        "43",
-                                                                                        "44",
-                                                                                        "45",
-                                                                                        "46",
-                                                                                        "47",
-                                                                                        "48",
-                                                                                        "49",
-                                                                                        "50"
+											'transfer'
 										])
 										.concat(
-											type === 'lines' ? ['line'] : []
+											type === 'combo_keys' ? ['line'] : []
 										)
 										.filter(function(action) {
 											return _.isEmpty(keyActionsMod) || _.includes(keyActionsMod, action);
@@ -1297,7 +1219,7 @@ define(function(require) {
 												info: _.get(i18n, ['info', 'types', action]),
 												label: _.get(i18n, ['types', action])
 											},
-											type === 'lines' && hasDefaultLineKeys && !_.includes(allowedDefaultLineKeyActions, action) ? {
+											type === 'combo_keys' && hasDefaultLineKeys && !_.includes(allowedDefaultLineKeyActions, action) ? {
 												isActionRestringed: true
 											}
 											: {}
@@ -1863,4 +1785,3 @@ define(function(require) {
 
 	return app;
 });
-
