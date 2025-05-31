@@ -2,19 +2,19 @@ define(function(require) {
 	var $ = require('jquery'),
 		_ = require('lodash'),
 		monster = require('monster');
-                    
+
 	var app = {
 
 		requests: {
 			'provisioner.ui.getModel': {
 				'apiRoot': monster.config.api.provisioner,
-				'url': 'phones/{brand}/{family}/{model}',
+				'url': 'ui/{brand}/{family}/{model}',
 				'verb': 'GET',
 				generateError: false
 			},
 			'provisioner.devices.unlock': {
 				'apiRoot': monster.config.api.provisioner,
-				'url': 'accounts/{accountId}/{macAddress}',
+				'url': 'locks/{accountId}/{macAddress}',
 				'verb': 'DELETE'
 			}
 		},
@@ -227,7 +227,6 @@ define(function(require) {
 		 * @return {Array}
 		 */
 		getKeyTypes: function(data) {
-                            
 			return _.filter([
 				'combo_keys',
 				'feature_keys'
@@ -355,13 +354,11 @@ define(function(require) {
 				deviceForm.find('.tabs-section[data-section="basic"]').append(assignTemplate);
 			}
 
-			if (data.extra.hasOwnProperty('provision')  &&  data.extra.provision.hasOwnProperty('keys'))  {
+			if (data.extra.hasOwnProperty('provision') && data.extra.provision.hasOwnProperty('keys')) {
 				_.each(data.extra.provision.keys, function(value) {
-                                     
 					var section = '.tabs-section[data-section="' + value.type + '"] ';
-                                                console.log(section);
+
 					_.each(value.data, function(val, key) {
-                                            
 						if (val) {
 							var groupSelector = '.control-group[data-id="' + key + '"] ',
 								valueSelector = '.feature-key-value[data-type~="' + val.type + '"]';
@@ -369,12 +366,10 @@ define(function(require) {
 							templateDevice
 								.find(section.concat(groupSelector, valueSelector))
 								.addClass('active');
-							templateDevice.find(valueSelector  + ' [name="provision.keys.'  +  value.id + '[' + key + '].value.line"]')
-								.val(_.get(val, 'key.line'));
-                                                        templateDevice.find(valueSelector + ' [name="provision.keys.' + value.id + '[' + key + '].value.label"]')
-								.val(_.get(val, 'key.label'));
 							templateDevice.find(valueSelector + ' [name="provision.keys.' + value.id + '[' + key + '].value.value"]')
-								.val(_.get(val, 'key.value'));
+								.val(_.get(val, 'value.value'));
+							templateDevice.find(valueSelector + ' [name="provision.keys.' + value.id + '[' + key + '].value.label"]')
+								.val(_.get(val, 'value.label'));
 						}
 					});
 				});
@@ -431,9 +426,8 @@ define(function(require) {
 									.each(function(idx, el) {
 										$(el).text(idx + 1);
 									});
-                                                                                    
+
 							if ($this.data('section') === 'comboKeys') {
-                                                            
 								$this
 									.find('.control-group')
 										.first()
@@ -832,17 +826,15 @@ define(function(require) {
 				 * form2object sends keys back as arrays even if the first key is 1
 				 * they needs to be coerced into an object to match the datatype in originalData
 				 */
-                                
 				_.each(formData.provision.keys, function(value, key, list) {
 					var keys = {};
 
 					_.each(list[key], function(val, idx) {
-                                            
 						if (val.type === 'none') {
-							keys[idx] = 'null';
+							keys[idx] = null;
 						} else {
 							if (key === 'combo_keys' && val.type === 'parking') {
-								val.value.value =  _.parseInt(val.value.value, 10);
+								val.value.value = _.parseInt(val.value.value, 10);
 							}
 
 							if (key !== 'combo_keys' || isValuePropertyEmpty(val, 'label')) {
@@ -857,28 +849,15 @@ define(function(require) {
 					});
 
 					if (_.isEmpty(keys)) {
-                                            delete originalData.provision.settings;
-						
+						delete originalData.provision[key];
 					} else {
-//                                            test = {};
-//                                               test =  originalData.provision.settings;
-//						test[key] = keys;
-                                            // originalData.provision.settings = {};
-//                                            originalData.provision.settings = { 
-//                                                lines : {} 
-//                                                };
-                    
-    
-
-                                           originalData.provision.settings = originalData.provision.settings || {};
-                                           originalData.provision.settings[key] = keys ;
-                                            
+						originalData.provision[key] = keys;
 					}
 				});
 
 				delete formData.provision.keys;
 			}
-                        //    console.log(formData);
+
 			var mergedData = $.extend(true, {}, originalData, formData);
 
 			/* The extend doesn't override an array if the new array is empty, so we need to run these snippet after the merge */
@@ -1082,12 +1061,8 @@ define(function(require) {
 							value: monster.util.tryI18n(self.i18n.active().commonMisc.outboundPrivacy.values, strategy)
 						};
 					}),
-					provision: {  
-                                           
-                                               
-                                            
-                                            keys: _
-						
+					provision: {
+						keys: _
 							.chain(data.template)
 							.thru(self.getKeyTypes)
 							.map(function(type) {
@@ -1102,105 +1077,12 @@ define(function(require) {
 									lineKeys: defaultLineKeys || [1],
 									actions: _
 										.chain([
-											'call_return',
-											'presence',
 											'parking',
 											'personal_parking',
-											'speed_dial',
-											'transfer'
-										])
-										.concat(
-											type === 'combo_keys' ? ['line'] : []
-										)
-										.filter(function(action) {
-											return _.isEmpty(keyActionsMod) || _.includes(keyActionsMod, action);
-										})
-										.concat(['none'])
-										.map(function(action) {
-											var i18n = self.i18n.active().devices.popupSettings.keys,
-												hasDefaultLineKeys = !!defaultLineKeys,
-												allowedDefaultLineKeyActions = ['none', 'line'];
-
-											return _.merge({
-												id: action,
-												info: _.get(i18n, ['info', 'types', action]),
-												label: _.get(i18n, ['types', action])
-											},
-											type === 'combo_keys' && hasDefaultLineKeys && !_.includes(allowedDefaultLineKeyActions, action) ? {
-												isActionRestringed: false
-											}
-											: {}
-											);
-										})
-										// Sort alphabetically while keeping `none` as first item
-										.sort(function(a, b) {
-											return a.id === 'none' ? -1
-												: b.id === 'none' ? 1
-												: a.label.localeCompare(b.label, monster.config.whitelabel.language);
-											
-										})
-										.value(),
-									data: _.map(entries, function(metadata, idx) {
-										var value = _.get(metadata, 'value', {});
-
-										return _.merge({ keyNumber: idx + 1 }, metadata, _.isPlainObject(value)
-											? {}
-											: {
-												value: {
-													value: _.toString(value)
-												}
-											}
-										);
-									})
-								}, _.pick(i18n, [
-									'menuTitle',
-									'sectionTitle',
-									'label'
-								]), _.has(i18n, 'range') ? {
-									sectionTitle: self.getTemplate({
-										name: '!' + i18n.sectionTitle,
-										data: {
-											range: entriesCount > 1 ? self.getTemplate({
-												name: '!' + i18n.range,
-												data: {
-													min: 1,
-													max: entriesCount
-												}
-											}) : ''
-										}
-									})
-								} : {});
-                                                            
-							})
-                                                    
-							.value(),
-                                                     
-						parkingSpots: _.range(1, 11),
-                                                
-                                                     settings: {  
-                                            
-                                                    keys: _
-						
-							.chain(data.template)
-							.thru(self.getKeyTypes)
-							.map(function(type) {
-								var camelCasedType = _.camelCase(type),
-									i18n = _.get(self.i18n.active().devices.popupSettings.keys, camelCasedType),
-									entries = getNormalizedProvisionEntriesForKeyType(type),
-									entriesCount = _.size(entries);
-
-								return _.merge({
-									id: type,
-									type: camelCasedType,
-									lineKeys: defaultLineKeys || [1],
-									actions: _
-										.chain([
-											'call_return',
 											'presence',
-											'parking',
-											'personal_parking',
 											'speed_dial',
-											'transfer'
+											'transfer',
+											'call_return'
 										])
 										.concat(
 											type === 'combo_keys' ? ['line'] : []
@@ -1227,9 +1109,9 @@ define(function(require) {
 										})
 										// Sort alphabetically while keeping `none` as first item
 										.sort(function(a, b) {
-//											return a.id === 'none' ? -1
-//												: b.id === 'none' ? 1
-//												: a.label.localeCompare(b.label, monster.config.whitelabel.language);
+											return a.id === 'none' ? -1
+												: b.id === 'none' ? 1
+												: a.label.localeCompare(b.label, monster.config.whitelabel.language);
 										})
 										.value(),
 									data: _.map(entries, function(metadata, idx) {
@@ -1262,18 +1144,10 @@ define(function(require) {
 										}
 									})
 								} : {});
-                                                            
 							})
-                                                    
 							.value(),
-                                                     
 						parkingSpots: _.range(1, 11)
-                                                                                               
-					}
-                                                   
-                                                                                               
 					},
-                                        
 					restrictions: _.mapValues(data.listClassifiers, function(metadata, classifier) {
 						var i18n = _.get(self.i18n.active().devices.classifiers, classifier);
 
