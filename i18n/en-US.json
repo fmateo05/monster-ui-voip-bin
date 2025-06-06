@@ -299,25 +299,23 @@
 					"message": "By default, this key will be used as a Line Key. It is strongly recommended that you not change it.",
 					"title": "Key {{variable}} Default"
 				},
-				"comboKeys": {
+				"featureKeys": {
 					"menuTitle": "Feature Keys",
 					"sectionTitle": "Feature Keys",
 					"label": "Feature key"
 				},
-				"lines": {
-					"menuTitle": "Lines Keys",
-					"sectionTitle": "Line Keys {{range}}",
+				"comboKeys": {
+					"menuTitle": "Combo Keys",
+					"sectionTitle": "Combo Keys {{range}}",
 					"range": "{{min}} - {{max}}",
-					"label": "Line key"
+					"label": "Combo key"
 				},
 				"labels": {
 					"deviceLabel": "Label on Device",
 					"function": "Function",
 					"parkingSpot": "Parking Spot",
 					"user": "User",
-					"value": "Value",
-                                        "lines": "Line Number",
-                                        "key": "Key"
+					"value": "Value"
 				},
 				"info": {
 					"link": {
@@ -340,36 +338,8 @@
 					"parking": "Parking",
 					"personal_parking": "Personal Parking",
 					"speed_dial": "Speed Dial",
-                                        "1":"1",
-                                        "2":"2",
-                                        "3":"3",
-                                        "4":"4",
-                                        "5":"5",
-                                        "6":"6",
-                                        "7":"7",
-                                        "8":"8",
-                                        "9":"9",
-                                        "10":"10",
-                                        "11":"11",
-                                        "12":"12",
-                                        "13":"13",
-                                        "14":"14",
-                                        "15":"15",
-                                        "16":"16",
-                                        "17":"17",
-                                        "18":"18",
-                                        "19":"19",
-                                        "20":"20",
-                                        "21":"21",
-                                        "22":"22",
-                                        "23":"23",
-                                        "24":"24",
-                                        "25":"25",
-                                        "26":"26",
-                                        "27":"27",
-                                        "28":"28",
-                                        "29":"29",
-                                        "30":"30"
+					"transfer": "Transfer",
+					"call_return": "Call Return"
 				}
 			}
 		},
