@@ -533,8 +533,9 @@ define(function(require) {
 
 			if ($.inArray(type, ['sip_device', 'smartphone', 'mobile', 'softphone', 'fax', 'ata']) > -1) {
 				var audioCodecs = monster.ui.codecSelector('audio', templateDevice.find('#audio_codec_selector'), data.media.audio.codecs);
+                               
 			}
-
+                        // var speakerVolume = monster.ui.mask(templateDevice.find('#audio_speakervolume'), data.speaker_volume);
 			if ($.inArray(type, ['sip_device', 'smartphone', 'mobile', 'softphone']) > -1) {
 				var videoCodecs = monster.ui.codecSelector('video', templateDevice.find('#video_codec_selector'), data.media.video.codecs);
 			}
@@ -544,10 +545,13 @@ define(function(require) {
 
 			monster.ui.tooltips(templateDevice);
 			monster.ui.mask(templateDevice.find('#mac_address'), 'macAddress');
+                     //   monster.ui.mask(templateDevice.find('#audio_speakervolume'), 'speakerVolume');
 			monster.ui.mask(templateDevice.find('[name="call_forward.number"]'), 'phoneNumber');
 			monster.ui.chosen(templateDevice.find('.chosen-feature-key-user'), {
 				width: 'inherit'
 			});
+                        
+                        templateDevice.find('[name="audio_speakervolume"]');
 
 			if (!(data.media.encryption.enforce_security)) {
 				templateDevice.find('#rtp_method').hide();
@@ -1228,6 +1232,7 @@ define(function(require) {
 							// Even though a device is registered, we don't count it as registered if it's disabled
 							isRegistered: isEnabled && isRegistered,
 							macAddress: device.mac_address,
+                                                        speakerVolume: device.audio_speakervolume,
 							registered: isRegistered,
 							sipUserName: device.userName,
 							sortableUserName: userName.split(' ').reverse().join(' '),
