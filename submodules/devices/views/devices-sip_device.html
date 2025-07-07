@@ -153,20 +153,47 @@
 				<div class="title">
 					{{ i18n.devices.popupSettings.audio.sectionTitle }}
 				</div>
-                         {{#if provision}}
-                                <div style="margin-left:450px;width:auto">
-                                    <label><p class='ringer'>{{i18n.devices.popupSettings.audio.ringerVolume}}</p></label>                              
-                                    <input type="range" id="audio_ringervolume" name="audio_ringervolume" min="-20" max="20" value="{{audio_ringervolume}}">
-                                </div>
-                                <div style="margin-left:450px;width:auto">
-                                     <label>{{i18n.devices.popupSettings.audio.handsetVolume}}</label>
-                                    <input type="range" id="audio_handsetvolume" name="audio_handsetvolume" min="-20" max="20" value="{{audio_handsetvolume}}">
-                                </div>
-                                <div style="margin-left:450px;width:auto">
-                                    <label>{{i18n.devices.popupSettings.audio.speakerVolume}}</label>
-                                     <input type="range" id="audio_speakervolume" name="audio_speakervolume" min="-20" max="20" value="{{audio_speakervolume}}">
-                                </div>
+                        {{#if provision}}
+                                <div style="margin-left:50px; display: flex; flex-direction: row; ">
+				<span>
+				    <i class="fa fa-microphone" style="font-size:32px"></i>
+                                    <!--label><p class='ringer'>{{i18n.devices.popupSettings.audio.ringerVolume}}</p></label-->
+				    <input style="width: 90px;" type="range" id="audio_micvolume" name="audio_micvolume" step="1"  min="-20" max="20" list="my-detents"  value="{{audio_micvolume}}" oninput="amount_mic.value=audio_micvolume.value">
+				    <b><output id="amount_mic" name="amount_mic" for="audio_micvolume"><b>{{audio_micvolume}}</b></output></b>
+				    <datalist id="my-detents">
+				           <option value="0">
+				    </datalist>
+                                </span>
+				<span>
+				    <i class="fa fa-volume-control-phone" style="font-size:32px"></i>
+                                    <!--label><p class='ringer'>{{i18n.devices.popupSettings.audio.ringerVolume}}</p></label-->
+				    <input style="width: 90px;" type="range" id="audio_ringervolume" name="audio_ringervolume" step="1"  min="-20" max="20" list="my-detents"  value="{{audio_ringervolume}}" oninput="amount_ringer.value=audio_ringervolume.value">
+				    <b><output id="amount_ringer" name="amount_ringer" for="audio_ringervolume"><b>{{audio_ringervolume}}</b></output></b>
+				    <datalist id="my-detents">
+				           <option value="0">
+				    </datalist>
+                                </span>
+                                <span>
+				    <i class="fa fa-phone" style="font-size:32px"></i>
+                                     <!--label>{{i18n.devices.popupSettings.audio.handsetVolume}}</label-->
+                                    <input style="width: 90px;" type="range" id="audio_handsetvolume" name="audio_handsetvolume" step="1" min="-20" max="20" list="my-detents" value="{{audio_handsetvolume}}" oninput="amount_handset.value=audio_handsetvolume.value">
+				    <b><output id="amount_handset" name="amount_handset" for="audio_handsetvolume">{{audio_handsetvolume}}</output></b>
+				    <datalist id="my-detents">
+				           <option value="0">
+				    </datalist>
+                                </span>
+                                <span>
+				    <i class="fa fa-volume-up" style="font-size:32px"></i>
+                                    <!--label>{{i18n.devices.popupSettings.audio.speakerVolume}}</label-->
+                                     <input style="width: 90px;" type="range" id="audio_speakervolume" name="audio_speakervolume" step="1" min="-20" max="20" list="my-detents" value="{{audio_speakervolume}}" oninput="amount_speaker.value=audio_speakervolume.value">
+				    <b><output id="amount" name="amount_speaker" for="audio_speakervolume"><b>{{audio_speakervolume}}</output></b>
+				    <datalist id="my-detents">
+				           <option value="0">
+				    </datalist>
+                                </span>
+				</div>
                          {{/if}}
+
 				<div class="helper">
 					<i class="fa fa-info-circle"></i>
 					{{ i18n.devices.popupSettings.dragAndDrop }}
