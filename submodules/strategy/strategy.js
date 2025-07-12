@@ -66,26 +66,6 @@ define(function(require) {
 				actionName: 'activate'
 			},
 			{
-				name: 'call_waiting[action=enable]',
-				number: '75',
-				callflowNumber: '*75',
-				moduleName: 'call_waiting',
-				actionName: 'activate',
-				metadata: {
-					scope : 'user'
-				}
-			},
-			{
-                                name: 'call_waiting[action=disable]',
-                                number: '76',
-                                callflowNumber: '*76',
-                                moduleName: 'call_waiting',
-                                actionName: 'deactivate',
-                                metadata: {
-                                        scope : 'user'
-                                }
-                        },
-			{
 				name: 'call_forward[action=toggle]',
 				number: '74',
 				pattern: '^\\*74([0-9]*)$',
@@ -3476,6 +3456,24 @@ define(function(require) {
 
 		strategyHandleFeatureCodes: function() {
 			var self = this,
+				featureCodeConfigs = _.keyBy(self.featureCodeConfigs, 'name'),
+				configToEntries = {
+					pattern: 'patterns',
+					callflowNumber: 'numbers'
+				},
+				isMalformed = function isMalformed(featureCode) {
+					var config = _.get(featureCodeConfigs, featureCode.featurecode.name),
+						configProp = _
+							.chain(configToEntries)
+							.keys()
+							.find(_.partial(_.has, config))
+							.value(),
+						expectedEntry = _.get(config, configProp),
+						entriesProp = _.get(configToEntries, configProp),
+						entries = _.get(featureCode, entriesProp);
+
+					return !_.isUndefined(config) && !_.isEqual(entries, [expectedEntry]);
+				},
 				createFeatureCodeFactory = function createFeatureCodeFactory(featureCode) {
 					return function(callback) {
 						self.strategyCreateCallflow({
@@ -3510,6 +3508,31 @@ define(function(require) {
 			monster.waterfall([
 				function fetchExistingFeatureCodes(callback) {
 					self.strategyGetFeatureCodes(_.partial(callback, null));
+				},
+				function maybeDeleteMalformedFeatureCodes(existing, callback) {
+					monster.parallel(_
+						.chain(existing)
+						.filter(isMalformed)
+						.keyBy('id')
+						.mapValues(function(featureCode) {
+							return function(callback) {
+								self.strategyDeleteCallflow({
+									bypassProgressIndicator: true,
+									data: {
+										callflowId: featureCode.id
+									},
+									success: _.partial(callback, null),
+									error: _.partial(callback, null)
+								});
+							};
+						})
+						.value()
+					, function(err, results) {
+						callback(null, _.reject(existing, _.flow([
+							_.partial(_.get, _, 'id'),
+							_.partial(_.includes, _.keys(results))
+						])));
+					});
 				},
 				function maybeCreateMissingFeatureCodes(existing, callback) {
 					monster.parallel(_

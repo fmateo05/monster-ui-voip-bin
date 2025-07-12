@@ -533,9 +533,8 @@ define(function(require) {
 
 			if ($.inArray(type, ['sip_device', 'smartphone', 'mobile', 'softphone', 'fax', 'ata']) > -1) {
 				var audioCodecs = monster.ui.codecSelector('audio', templateDevice.find('#audio_codec_selector'), data.media.audio.codecs);
-                               
 			}
-                        // var speakerVolume = monster.ui.mask(templateDevice.find('#audio_speakervolume'), data.speaker_volume);
+
 			if ($.inArray(type, ['sip_device', 'smartphone', 'mobile', 'softphone']) > -1) {
 				var videoCodecs = monster.ui.codecSelector('video', templateDevice.find('#video_codec_selector'), data.media.video.codecs);
 			}
@@ -545,13 +544,10 @@ define(function(require) {
 
 			monster.ui.tooltips(templateDevice);
 			monster.ui.mask(templateDevice.find('#mac_address'), 'macAddress');
-                     //   monster.ui.mask(templateDevice.find('#audio_speakervolume'), 'speakerVolume');
 			monster.ui.mask(templateDevice.find('[name="call_forward.number"]'), 'phoneNumber');
 			monster.ui.chosen(templateDevice.find('.chosen-feature-key-user'), {
 				width: 'inherit'
 			});
-                        
-                        templateDevice.find('[name="audio_speakervolume"]');
 
 			if (!(data.media.encryption.enforce_security)) {
 				templateDevice.find('#rtp_method').hide();
@@ -940,19 +936,6 @@ define(function(require) {
 		devicesFormatData: function(data, dataList) {
 			var self = this,
 				isNewDevice = !_.has(data.device, 'id'),
-				getNormalizedProvisionEntriesForKeyType = _.partial(function(device, template, keyType) {
-					var iterate = _.get(template, [keyType, 'iterate'], 0),
-						entries = _.get(device, ['provision', keyType], {}),
-						getEntryValueOrDefault = _.partial(_.get, entries, _, {
-							type: 'none'
-						});
-
-					return _
-						.chain(iterate)
-						.range()
-						.map(getEntryValueOrDefault)
-						.value();
-				}, data.device, data.template),
 				keyActionsMod = _.get(
 					self.appFlags.devices.provisionerConfigFlags,
 					['brands', _.get(data.device, 'provision.endpoint_brand'), 'keyFunctions'],
@@ -967,7 +950,10 @@ define(function(require) {
 				},
 				templateDefaults = {
 					media: {
-						audio: {},
+						audio: {
+							
+							codecs: ['PCMA', 'PCMU']
+						},
 						encryption: {},
 						video: {}
 					}
@@ -1036,6 +1022,29 @@ define(function(require) {
 					isNewDevice && deviceBaseDefaults,
 					deviceDefaultsForType
 				),
+				deviceOverrides = {
+					provision: _
+						.chain(data.template)
+						.thru(self.getKeyTypes)
+						.map(function(type) {
+							return {
+								type: type,
+								data: _
+									.chain(data.template)
+									.get([type, 'iterate'], 0)
+									.range()
+									.map(function(index) {
+										return _.get(data.device, ['provision', type, index], {
+											type: 'none'
+										});
+									})
+									.value()
+							};
+						})
+						.keyBy('type')
+						.mapValues('data')
+						.value()
+				},
 				deviceData = _.mergeWith(
 					{},
 					templateDefaults,
@@ -1044,11 +1053,16 @@ define(function(require) {
 					function(dest, src) {
 						return _.every([dest, src], _.isArray) ? src : undefined;
 					}
+				),
+				mergedDevice = _.merge(
+					{},
+					deviceData,
+					deviceOverrides
 				);
 
 			return _.merge({
 				extra: {
-					allowVMCellphone: !_.get(deviceData, 'call_forward.require_keypress', true),
+					allowVMCellphone: !_.get(mergedDevice, 'call_forward.require_keypress', true),
 					availableCodecs: {
 						audio: [],
 						video: []
@@ -1072,7 +1086,7 @@ define(function(require) {
 							.map(function(type) {
 								var camelCasedType = _.camelCase(type),
 									i18n = _.get(self.i18n.active().devices.popupSettings.keys, camelCasedType),
-									entries = getNormalizedProvisionEntriesForKeyType(type),
+									entries = _.get(mergedDevice, ['provision', type], []),
 									entriesCount = _.size(entries);
 
 								return _.merge({
@@ -1081,12 +1095,10 @@ define(function(require) {
 									lineKeys: defaultLineKeys || [1],
 									actions: _
 										.chain([
+											'presence',
 											'parking',
 											'personal_parking',
-											'presence',
-											'speed_dial',
-											'transfer',
-											'call_return'
+											'speed_dial'
 										])
 										.concat(
 											type === 'combo_keys' ? ['line'] : []
@@ -1162,8 +1174,8 @@ define(function(require) {
 							help: _.get(i18n, 'help')
 						};
 					}),
-					rtpMethod: _.get(deviceData, 'media.encryption.enforce_security', false)
-						? _.head(deviceData.media.encryption.methods)
+					rtpMethod: _.get(mergedDevice, 'media.encryption.enforce_security', false)
+						? _.head(mergedDevice.media.encryption.methods)
 						: '',
 					selectedCodecs: {
 						audio: [],
@@ -1177,7 +1189,7 @@ define(function(require) {
 							.value();
 					})
 				}
-			}, deviceData);
+			}, mergedDevice);
 		},
 
 		/**
@@ -1232,7 +1244,6 @@ define(function(require) {
 							// Even though a device is registered, we don't count it as registered if it's disabled
 							isRegistered: isEnabled && isRegistered,
 							macAddress: device.mac_address,
-                                                        speakerVolume: device.audio_speakervolume,
 							registered: isRegistered,
 							sipUserName: device.userName,
 							sortableUserName: userName.split(' ').reverse().join(' '),

@@ -182,9 +182,6 @@
 				"sectionTitle": "Audio Settings",
 				"selectedCodecs": "Selected Codecs",
 				"unselectedCodecs": "Available Codecs",
-                                "ringerVolume": "Ringer Volume",
-                                "handsetVolume":"HandSet Volume",
-                                "speakerVolume":"Speaker Volume",
 				"codecs": {
 					"OPUS": "OPUS",
 					"CELT@32000h": "Siren @ 32Khz",
@@ -340,9 +337,7 @@
 					"presence": "Presence",
 					"parking": "Parking",
 					"personal_parking": "Personal Parking",
-					"speed_dial": "Speed Dial",
-					"transfer": "Transfer",
-					"call_return": "Call Return"
+					"speed_dial": "Speed Dial"
 				}
 			}
 		},

@@ -232,12 +232,6 @@ define(function(require) {
 				}
 			});
 
-			templateVMBox.find('#skip_instructions').on('click', function() {
-				var isChecked = $(this).prop('checked');
-
-				templateVMBox.find('#skip_instructions_input').val(isChecked);
-			});
-
 			templateVMBox.find('#announcement_only').on('click', function() {
 				var $this = $(this),
 					isChecked = $this.prop('checked'),
