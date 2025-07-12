@@ -842,7 +842,7 @@ define(function(require) {
 								val.value.value = _.parseInt(val.value.value, 10);
 							}
 
-							if (key !== 'combo_keys' || isValuePropertyEmpty(val, 'label')) {
+							if (key === 'feature_keys' || isValuePropertyEmpty(val, 'label')) {
 								if (isValuePropertyEmpty(val, 'value')) {
 									delete val.value;
 								} else {
