@@ -182,6 +182,9 @@
 				"sectionTitle": "Audio Settings",
 				"selectedCodecs": "Selected Codecs",
 				"unselectedCodecs": "Available Codecs",
+				"ringerVolume": "Ringer Volume",
+                                "handsetVolume":"HandSet Volume",
+                                "speakerVolume":"Speaker Volume", 
 				"codecs": {
 					"OPUS": "OPUS",
 					"CELT@32000h": "Siren @ 32Khz",
@@ -310,6 +313,12 @@
 					"range": "{{min}} - {{max}}",
 					"label": "Combo key"
 				},
+				"expansionKeys": {
+					"menuTitle": "Expansion Keys",
+					"sectionTitle": "Expansion Keys {{range}}",
+					"range": "{{min}} - {{max}}",
+					"label": "Expansion key"
+				},
 				"labels": {
 					"deviceLabel": "Label on Device",
 					"function": "Function",
@@ -337,7 +346,9 @@
 					"presence": "Presence",
 					"parking": "Parking",
 					"personal_parking": "Personal Parking",
-					"speed_dial": "Speed Dial"
+					"speed_dial": "Speed Dial",
+					"transfer": "Transfer",
+					"call_return": "Call Return"
 				}
 			}
 		},

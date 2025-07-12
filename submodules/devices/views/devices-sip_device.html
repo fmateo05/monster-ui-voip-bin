@@ -153,7 +153,9 @@
 				<div class="title">
 					{{ i18n.devices.popupSettings.audio.sectionTitle }}
 				</div>
-                        {{#if provision}}
+
+
+				{{#if provision}}
                                 <div style="margin-left:50px; display: flex; flex-direction: row; ">
 				<span>
 				    <i class="fa fa-microphone" style="font-size:32px"></i>
@@ -194,19 +196,17 @@
 				</div>
                          {{/if}}
 
-				<div class="helper">
+				<br><div class="helper">
 					<i class="fa fa-info-circle"></i>
 					{{ i18n.devices.popupSettings.dragAndDrop }}
 				</div>
-
-				<div class="items-selector codec-selector clearfix" id="audio_codec_selector"></div>
+				<div class="items-selector codec-selector clearfix" id="audio_codec_selector"></div></br>
 			</div>
 
 			<div class="tabs-section clearfix" data-section="video">
 				<div class="title">
 					{{ i18n.devices.popupSettings.video.sectionTitle }}
 				</div>
-                        
 				<div class="helper">
 					<i class="fa fa-info-circle"></i>
 					{{ i18n.devices.popupSettings.dragAndDrop }}
@@ -475,6 +475,12 @@
 								<input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].value.value">
 							</div>
 						{{#compare ../id '===' 'combo_keys'}}
+							<div class="feature-key-value" data-type="presence personal_parking speed_dial parking call_return transfer">
+								<label for="provision.keys.{{../id}}[{{@index}}].value.label">{{ @root.i18n.devices.popupSettings.keys.labels.deviceLabel }}</label>
+								<input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].value.label">
+							</div>
+						{{/compare}}
+						{{#compare ../id '===' 'expansion_keys'}}
 							<div class="feature-key-value" data-type="presence personal_parking speed_dial parking call_return transfer">
 								<label for="provision.keys.{{../id}}[{{@index}}].value.label">{{ @root.i18n.devices.popupSettings.keys.labels.deviceLabel }}</label>
 								<input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].value.label">
