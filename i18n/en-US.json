@@ -307,6 +307,12 @@
 					"sectionTitle": "Feature Keys",
 					"label": "Feature key"
 				},
+				"programmableKeys": {
+					"menuTitle": "Programmable Keys",
+					"sectionTitle": "Programmable Keys {{range}}",
+					"range": "{{min}} - {{max}}",
+					"label": "Programmable key"
+				},
 				"comboKeys": {
 					"menuTitle": "Combo Keys",
 					"sectionTitle": "Combo Keys {{range}}",

@@ -230,7 +230,8 @@ define(function(require) {
 			return _.filter([
 				'combo_keys',
 				'expansion_keys',
-				'feature_keys'
+				'feature_keys',
+				'programmable_keys'
 			], function(type) {
 				return _.get(data, [type, 'iterate'], 0) > 0;
 			});
@@ -841,6 +842,9 @@ define(function(require) {
 							if (key === 'expansion_keys' && val.type === 'parking') {
 								val.value.value = _.parseInt(val.value.value, 10);
 							}
+							if (key === 'programmable_keys' && val.type === 'parking') {
+								val.value.value = _.parseInt(val.value.value, 10);
+							}
 
 							if (key === 'feature_keys' || isValuePropertyEmpty(val, 'label')) {
 								if (isValuePropertyEmpty(val, 'value')) {
@@ -1099,7 +1103,8 @@ define(function(require) {
 										])
 										.concat(
 											type === 'combo_keys' ? ['line'] : [],
-											type === 'expansion_keys' ? ['line'] : []
+											type === 'expansion_keys' ? ['line'] : [],
+											type === 'programmable_keys' ? ['line'] : []
 										)
 										.filter(function(action) {
 											return _.isEmpty(keyActionsMod) || _.includes(keyActionsMod, action);

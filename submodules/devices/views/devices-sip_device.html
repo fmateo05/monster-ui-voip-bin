@@ -486,6 +486,12 @@
 								<input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].value.label">
 							</div>
 						{{/compare}}
+						{{#compare ../id '===' 'programmable_keys'}}
+							<div class="feature-key-value" data-type="presence personal_parking speed_dial parking call_return transfer">
+								<label for="provision.keys.{{../id}}[{{@index}}].value.label">{{ @root.i18n.devices.popupSettings.keys.labels.deviceLabel }}</label>
+								<input type="text" value="" name="provision.keys.{{../id}}[{{@index}}].value.label">
+							</div>
+						{{/compare}}
 						</div>
 					</div>
 				{{/each}}
