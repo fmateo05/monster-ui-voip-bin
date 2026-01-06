@@ -118,6 +118,7 @@
 					<div class="controls">
 						<span class="displayed-realm">{{ sip.realm }}</span>
 					</div>
+	
 				</div>
 				{{/if}}
 			</div>
@@ -147,6 +148,63 @@
 							<span class="displayed-realm">{{ sip.realm }}</span>
 						</div>
 					</div>
+					{{#compare provision.endpoint_brand '===' 'portsip' }}
+					 <div class="sips-right clearfix" id="qrcode">
+								<head>
+									<style>
+									#qrcode {
+       
+										  position: absolute;  
+										  margin-top: -225px;
+										  margin-left: 15px;
+										  right: 20px;
+  
+
+}
+									</style>
+								</head>
+								<script type="text/javascript">
+									var barcode = '{{{ portsip_qr }}}';
+									new QRCode(document.getElementById("qrcode"), {
+										text : barcode,
+										width: 200,
+										height: 200,
+										colorDark : "#000000",
+										colorLight : "#ffffff",
+										correctLevel : QRCode.CorrectLevel.L
+									});
+								</script>
+						</div>
+					 {{/compare}}
+					 {{#compare provision.endpoint_brand '===' 'linphone' }}
+                                         <div class="sips-right clearfix" id="qrcode">
+                                                                <head>
+                                                                        <style>
+                                                                        #qrcode {
+
+                                                                                  position: absolute;
+                                                                                  margin-top: -225px;
+                                                                                  margin-left: 15px;
+                                                                                  right: 20px;
+ 
+
+}
+                                                                        </style>
+                                                                </head>
+                                                                <script type="text/javascript">
+                                                                        var barcode = '{{{ linphone_qr }}}';
+                                                                        new QRCode(document.getElementById("qrcode"), {
+                                                                                text : barcode,
+                                                                                width: 200,
+                                                                                height: 200,
+                                                                                colorDark : "#000000",
+                                                                                colorLight : "#ffffff",
+                                                                                correctLevel : QRCode.CorrectLevel.L
+                                                                        });
+                                                                </script>
+                                                </div>
+                                         {{/compare}}
+
 				</div>
 			{{/if}}
 			<div class="tabs-section clearfix" data-section="audio">
