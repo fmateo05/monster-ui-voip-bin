@@ -2,13 +2,14 @@ define(function(require) {
 	var $ = require('jquery'),
 		_ = require('lodash'),
 		monster = require('monster');
+		QRCode = require(['js/vendor/qrcode','js/vendor/qrcode.min','jquery']);
 
 	var app = {
 
 		requests: {
 			'provisioner.ui.getModel': {
 				'apiRoot': monster.config.api.provisioner,
-				'url': 'ui/{brand}/{family}/{model}',
+				'url': 'phones/{brand}/{family}/{model}',
 				'verb': 'GET',
 				generateError: false
 			},
@@ -253,7 +254,15 @@ define(function(require) {
 					self.devicesRender();
 				};
 
+				var linphonefetch = $.get('<provisioner-creds-server>/creds/' +  self.accountId ,function(data) {
+				   JSON.parse(data);
+				});
 			self.devicesGetEditData(data, function(dataDevice) {
+				                             portsip_qr = '{    "name": "'+ dataDevice.sip.username + '",    "dn": "' + dataDevice.sip.realm + '",    "wdn": "' + dataDevice.sip.realm + '",    "ts": [        {            "pn": "UDP",            "port": "5060"        }   ],        "ext": "' + dataDevice.sip.username + '",    "pwd": "'+ dataDevice.sip.password +'",     "v": 1 }' ;
+				linphonedata = JSON.parse(linphonefetch.responseText);
+				linphone_qr = 'https://' + linphonedata.data.grandstream_config_server_path + ':444/' + linphonedata.data.http_auth_username + '/' + linphonedata.data.http_auth_password + '/' + dataDevice.mac_address + '.xml' ;
+
+
 				self.devicesRenderDevice({
 					data: dataDevice,
 					allowAssign: allowAssign,
@@ -337,11 +346,16 @@ define(function(require) {
 						}
 					})
 					: self.i18n.active().devices[type].addTitle,
+				linphonefetch = $.get('https://portal.bevoip.net:9443/creds/' +  self.accountId ,function(data) {
+				   JSON.parse(data);
+				});
 				templateDevice = $(self.getTemplate({
 					name: 'devices-' + type,
 					data: $.extend(true, {}, data, {
 						isProvisionerConfigured: monster.config.api.hasOwnProperty('provisioner'),
-						showEmergencyCallerId: monster.util.isNumberFeatureEnabled('e911')
+						showEmergencyCallerId: monster.util.isNumberFeatureEnabled('e911'),
+						portsip_qr : '{    "name": "'+ data.sip.username + '",    "dn": "' + data.sip.realm + '",    "wdn": "' + data.sip.realm + '",    "ts": [        {            "pn": "UDP",            "port": "7000"        }   ],        "ext": "' + data.sip.username + '",    "pwd": "'+ data.sip.password +'",     "v": 1 }' ,
+				linphone_qr: linphone_qr
 					}),
 					submodule: 'devices'
 				})),
