@@ -254,7 +254,7 @@ define(function(require) {
 					self.devicesRender();
 				};
 
-				var linphonefetch = $.get('<provisioner-creds-server>/creds/' +  self.accountId ,function(data) {
+				var linphonefetch = $.get(monster.config.api.provisioner + 'creds/' +  self.accountId ,function(data) {
 				   JSON.parse(data);
 				});
 			self.devicesGetEditData(data, function(dataDevice) {
@@ -346,7 +346,7 @@ define(function(require) {
 						}
 					})
 					: self.i18n.active().devices[type].addTitle,
-				linphonefetch = $.get('https://portal.bevoip.net:9443/creds/' +  self.accountId ,function(data) {
+				linphonefetch = $.get(monster.config.api.provisioner + 'creds/' +  self.accountId ,function(data) {
 				   JSON.parse(data);
 				});
 				templateDevice = $(self.getTemplate({
@@ -1141,11 +1141,11 @@ define(function(require) {
 											);
 										})
 										// Sort alphabetically while keeping `none` as first item
-										.sort(function(a, b) {
-											return a.id === 'none' ? -1
-												: b.id === 'none' ? 1
-												: a.label.localeCompare(b.label, monster.config.whitelabel.language);
-										})
+										// .sort(function(a, b) {
+										// 	return a.id === 'none' ? -1
+										// 		: b.id === 'none' ? 1
+										// 		: a.label.localeCompare(b.label, monster.config.whitelabel.language);
+										// })
 										.value(),
 									data: _.map(entries, function(metadata, idx) {
 										var value = _.get(metadata, 'value', {});
