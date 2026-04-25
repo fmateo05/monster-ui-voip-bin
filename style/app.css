@@ -280,6 +280,61 @@
       margin-right: 10px; }
 .voip-edit-device-popup .edit-device .tabs-section[data-section="featureKeys"] input[type="text"] {
   width: 190px; }
+.voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group {
+  padding: 1rem;
+  box-shadow: inset 0px 1px 0px 0px #DBDBDE, inset 0px -1px 0px 0px #DBDBDE; }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group.placeholder {
+    height: 91px; }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group.warning {
+    background-color: #FCF8E3; }
+    .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group.warning .monster-panel-text {
+      display: block; }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group:hover {
+    box-shadow: inset 0px 1px 0px 0px #DBDBDE, inset 0px -1px 0px 0px #DBDBDE, 0px 1px 4px 0px rgba(21, 21, 23, 0.24); }
+    .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group:hover .drag-handle-icon {
+      width: 1rem;
+      margin-right: 0.75rem; }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group .drag-handle-icon {
+    display: inline-block;
+    width: 0;
+    margin-right: 0;
+    transition: all 0.25s ease-in-out; }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group .controls {
+    margin-left: 0px;
+    display: flex; }
+    .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group .controls .feature-key-value {
+      display: none;
+      margin-left: 0.5rem; }
+      .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group .controls .feature-key-value:first-of-type {
+        margin-left: 0; }
+      .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group .controls .feature-key-value.active {
+        display: block;
+        width: calc(33.33% - 0.33rem); }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group .monster-panel-text {
+    display: none; }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group label {
+    display: block;
+    float: none; }
+    .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group label.control-label {
+      margin-bottom: 1rem;
+      padding-top: 0;
+      width: auto;
+      text-align: left;
+      font-size: 1rem;
+      color: #151517; }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group select {
+    display: block;
+    width: 100%; }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group input {
+    display: block;
+    width: auto; }
+  .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group .chosen-container {
+    display: block;
+    width: 100% !important; }
+    .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group .chosen-container .chosen-drop {
+      width: 100%; }
+      .voip-edit-device-popup .edit-device .tabs-section[data-section="expansionKeys"] .control-group .chosen-container .chosen-drop .chosen-search input {
+        width: 100%; }
 .voip-edit-device-popup .edit-device .tabs-section[data-section="comboKeys"] .control-group {
   padding: 1rem;
   box-shadow: inset 0px 1px 0px 0px #DBDBDE, inset 0px -1px 0px 0px #DBDBDE; }
